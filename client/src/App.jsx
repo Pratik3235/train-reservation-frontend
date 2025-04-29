@@ -17,33 +17,63 @@ export default function App() {
     setLoggedIn(false);
   };
 
+  const navStyle = {
+    padding: '15px 30px',
+    background: '#1e293b',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    color: 'white',
+    fontFamily: 'Arial, sans-serif'
+  };
+
+  const linkStyle = {
+    marginRight: '20px',
+    color: 'white',
+    textDecoration: 'none',
+    fontWeight: 'bold'
+  };
+
+  const buttonStyle = {
+    backgroundColor: '#ef4444',
+    color: 'white',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: '5px',
+    cursor: 'pointer'
+  };
+
   return (
     <Router>
-      <nav style={{ padding: '10px', background: '#eee', marginBottom: '20px' }}>
-        <Link to="/" style={{ marginRight: '10px' }}>Home</Link>
-        {!loggedIn && (
-          <>
-            <Link to="/login" style={{ marginRight: '10px' }}>Login</Link>
-            <Link to="/signup">Signup</Link>
-          </>
-        )}
+      <nav style={navStyle}>
+        <div>
+          <Link to="/" style={linkStyle}>Home</Link>
+          {!loggedIn && (
+            <>
+              <Link to="/login" style={linkStyle}>Login</Link>
+              <Link to="/signup" style={linkStyle}>Signup</Link>
+            </>
+          )}
+          {loggedIn && (
+            <>
+              <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
+            </>
+          )}
+        </div>
         {loggedIn && (
-          <>
-            <Link to="/dashboard" style={{ marginRight: '10px' }}>Dashboard</Link>
-            <button onClick={handleLogout} style={{ marginLeft: '10px' }}>Logout</button>
-          </>
+          <button onClick={handleLogout} style={buttonStyle}>Logout</button>
         )}
       </nav>
 
-      <Routes>
-        <Route path="/" element={<h2>Welcome to Train Seat Reservation System</h2>} />
-        <Route path="/login" element={<Login setLoggedIn={setLoggedIn} />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard" element={
-          loggedIn ? <Dashboard /> : <Navigate to="/login" replace />
-        } />
-        <Route path="*" element={<h2>404 Not Found</h2>} />
-      </Routes>
+      <div style={{ padding: '30px', fontFamily: 'Arial, sans-serif' }}>
+        <Routes>
+          <Route path="/" element={<h2>🚄 Welcome to Train Seat Reservation System</h2>} />
+          <Route path="/login" element={<Login setLoggedIn={setLoggedIn} />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={loggedIn ? <Dashboard /> : <Navigate to="/login" replace />} />
+          <Route path="*" element={<h2>❌ 404 - Page Not Found</h2>} />
+        </Routes>
+      </div>
     </Router>
   );
 }
