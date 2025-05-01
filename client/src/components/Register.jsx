@@ -24,12 +24,6 @@ const styles = {
     fontWeight: "800",
     color: "#111827",
     textAlign: "center",
-    marginBottom: "0.25rem",
-  },
-  subText: {
-    textAlign: "center",
-    fontSize: "0.9rem",
-    color: "#6b7280",
     marginBottom: "1.5rem",
   },
   label: {
@@ -59,7 +53,7 @@ const styles = {
   button: {
     width: "100%",
     padding: "0.75rem",
-    background: "linear-gradient(to right, #22c55e, #16a34a)",
+    background: "linear-gradient(to right, #16a34a, #22c55e)",
     color: "#ffffff",
     fontSize: "1rem",
     fontWeight: "600",
@@ -72,13 +66,13 @@ const styles = {
     transform: "translateY(-2px)",
     boxShadow: "0 8px 15px rgba(34, 197, 94, 0.3)",
   },
-  registerText: {
+  linkContainer: {
     textAlign: "center",
     fontSize: "0.875rem",
     marginTop: "1rem",
     color: "#6b7280",
   },
-  registerLink: {
+  link: {
     color: "#2563eb",
     fontWeight: "500",
     marginLeft: "4px",
@@ -86,11 +80,15 @@ const styles = {
   },
 };
 
-const Login = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [hover, setHover] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -99,73 +97,80 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://train-reservation-backend-er3f.onrender.com/users/login", // 🔧 updated URL
+        "https://train-reservation-backend-er3f.onrender.com/users/register",
         formData
       );
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.userId);
-        navigate("/book-ticket");
+      if (response.data) {
+        navigate("/login");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.heading}>Welcome Back</h2>
-        <p style={styles.subText}>Sign in to your account</p>
-
+        <h2 style={styles.heading}>Create Account</h2>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email" style={styles.label}>
-            Email address
+          <label htmlFor="name" style={styles.label}>
+            Name
           </label>
           <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Your name"
             style={styles.input}
-            type="email"
+          />
+
+          <label htmlFor="email" style={styles.label}>
+            Email
+          </label>
+          <input
             id="email"
             name="email"
-            placeholder="Enter your email"
+            type="email"
+            required
             value={formData.email}
             onChange={handleChange}
-            required
+            placeholder="Email address"
+            style={styles.input}
           />
 
           <label htmlFor="password" style={styles.label}>
             Password
           </label>
           <input
-            style={styles.input}
-            type="password"
             id="password"
             name="password"
-            placeholder="Enter password"
+            type="password"
+            required
             value={formData.password}
             onChange={handleChange}
-            required
+            placeholder="Password"
+            style={styles.input}
           />
 
           {error && <div style={styles.errorBox}>{error}</div>}
 
           <button
             type="submit"
-            style={{
-              ...styles.button,
-              ...(hover ? styles.buttonHover : {}),
-            }}
+            style={{ ...styles.button, ...(hover ? styles.buttonHover : {}) }}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            Login
+            Register
           </button>
         </form>
 
-        <div style={styles.registerText}>
-          Don't have an account?
-          <Link to="/register" style={styles.registerLink}>
-            Register here
+        <div style={styles.linkContainer}>
+          Already have an account?
+          <Link to="/login" style={styles.link}>
+            Login here
           </Link>
         </div>
       </div>
@@ -173,4 +178,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
