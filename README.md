@@ -2,7 +2,7 @@
 
 A responsive React + Vite-based frontend for booking train seats, with secure authentication, a real-time seat grid, and role-based dashboard access.
 
-🔗 **Live App:** [Train Seat Reservation Frontend](https://6811132467093ee900ac19f4--incomparable-gingersnap-76c15b.netlify.app/)
+🔗 **Live App:** [Train Seat Reservation Frontend](https://leafy-yeot-878e5f.netlify.app/)
 
 ---
 
